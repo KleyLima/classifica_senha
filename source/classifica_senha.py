@@ -1,6 +1,7 @@
 # coding: utf-8
 
-import re
+from re import findall
+from sys import argv
 
 class ClassificaSenha:
     def __init__(self, pwd):
@@ -13,5 +14,13 @@ class ClassificaSenha:
         especiais. Uma senha de 9 caracteres no total contendo num, letras e simbolos é forte. O mesmo caso usando
         letras e números apenas é classificada como média.
         """
-        if len(self.pwd) > 7:
+        lvl = 0
+        if len(self.pwd) > 7:  # Checa tamanho min. da senha
+            lvl = lvl + 1 if findall('\w\D', self.pwd) else lvl  # checa letras
+            lvl = lvl + 1 if findall('\d', self.pwd) else lvl  # checa num
+            lvl = lvl + 1 if findall('\W', self.pwd) else lvl  # checa símbolos
+            return lvl - 1
 
+
+if __name__ == '__main__':
+    print(ClassificaSenha(argv[1]).classifica_senha())
